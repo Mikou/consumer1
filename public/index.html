@@ -1,0 +1,77 @@
+<html>
+  <head>
+    <title>consumer app</title>
+    <script src="./odatajs-latest.js"></script>
+    <script src="http://uvis.dk/uvis.js"></script>
+    <style>
+      body {
+        background-color:#eee;
+        font-family: sans-serif;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <div id="content"></div>
+
+    <script>
+
+      if(typeof uvis === 'undefined') {
+        document.getElementById("content").innerHTML = '<p>Oups! check that uvis is available at: <a href="http://uvis.dk">http://uvis.dk</a>.</p>';
+      }
+      uvis.config({
+        fileProvider: function (filename) {
+
+          return new Promise( function (resolve, reject) {
+            var xhr = new XMLHttpRequest();
+
+            xhr.open("GET", './files/' + filename);
+            xhr.send();
+            xhr.onreadystatechange = function() {
+              if (xhr.readyState == 4 && xhr.status == 200) {
+                var stream = xhr.responseText;
+                resolve(stream);
+                 // Action to be performed when the document is read;
+              }
+            };
+
+            });
+        },
+        odatajs: odatajs,
+        databaseConnector: function (url, opts) {
+
+          if(!opts) {
+            var opts = {
+              method: 'GET'
+            };
+          }
+
+          if(opts.method !== "GET") throw new Error("Only get methods are supported");
+
+          return new Promise( function(resolve, reject) {
+            var xhr = new XMLHttpRequest();
+
+            xhr.open(opts.method, url, true);
+            xhr.onreadystatechange = function () {
+              if(xhr.readyState === 4) {
+
+                if(xhr.status === 200) {
+                  resolve(xhr.responseText);
+                } else {
+                  reject(new Error("The connection to the database failed. Check that the service is running and check your CORS settings."));
+                }
+              }
+            }
+            xhr.send(null);
+          });
+        },
+        initialVismfile:'initial.vism',
+        selector:'content',
+        odata:'not yet implemented'
+      });
+    
+      uvis.run();
+
+    </script>
+  </body>
+</html>

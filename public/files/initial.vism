@@ -1,0 +1,14 @@
+StartUpForm : "initial.vis"
+--------------------------------
+Database: "http://localhost:8088/service.svc/"
+--------------------------------
+Table: People
+ID: "Not yet implemented"
+Age: "Not yet implemented"
+Name: "Not yet implemented"
+-------------------------------.
+Table: Activities
+ID: "Not yet implemented"
+Name: "Not yet implemented"
+Start: "Not yet implemented"
+End: "Not yet implemented"

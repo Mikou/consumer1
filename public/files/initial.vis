@@ -1,0 +1,26 @@
+' comment
+Width: 640
+Height: 480
+Name: Demo
+--------------------
+TextBox:MyText
+Rows:Map!People -< Form.MyText2
+Top:0
+Left:0
+Width:50
+Height:50
+Text: "Hello world"
+--------------------
+TextBox: MyText2
+Top:80
+Left:0
+Width:50
+Height:50
+Text: "Triangle"
+--------------------
+TextBox: Cube
+Top:160
+Left:0
+Width:50
+Height:70
+Text: "Cube"
