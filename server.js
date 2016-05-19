@@ -24,10 +24,7 @@ app.get('/files/:name', function(req, res, next) {
       console.log(err);
       res.status(err.status).end();
     }
-    else {
-      console.log('Sent:', filename);
-    }
-  })}, 3000);
+  })}, 500);
 });
 
 app.use(express.static('public'));

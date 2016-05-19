@@ -1,26 +1,20 @@
 ' comment
-Width: 640
-Height: 480
-Name: Demo
+Width:   640
+Height:  480
+Name:    Demo
 --------------------
-TextBox:MyText
-Rows:Map!People -< Form.MyText2
-Top:0
-Left:0
-Width:50
-Height:50
-Text: "Hello world"
+TextBox: txtPerson
+Rows:    Map.People
+Top:     10 + index * 25
+Left:    10
+Width:   100
+Height:  50
+Text:    Map.People.Name
 --------------------
-TextBox: MyText2
-Top:80
-Left:0
-Width:50
-Height:50
-Text: "Triangle"
---------------------
-TextBox: Cube
-Top:160
-Left:0
-Width:50
-Height:70
-Text: "Cube"
+TextBox: txtActivity
+Rows:    Form.txtPerson -< Map.Activities WHERE Map.Activities.Start > #2016-05-10#
+Top:     Parent ! Top
+Left:    150
+Width:   50
+Height:  50
+Text:    Map.Activities.Name
