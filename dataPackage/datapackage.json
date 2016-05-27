@@ -1,0 +1,125 @@
+{
+  "name": "consumer1.dk-datapackage",
+  "title": "consumer1.dk datapackage",
+  "description": "a hypotetical datapackage for consumer1.dk",
+  "license":"MIT",
+  "homepage": "http://consumer1.dk",
+  "version": "0.1",
+  "author":"michael jespersen <michael.jespersen@gmail.com>",
+  "resources": [
+    {
+      "name": "person",
+      "path": "./person.json",
+      "schema": "person"
+    },
+    {
+      "name": "project",
+      "path": "./project.json",
+      "schema": "project"
+    },
+    {
+      "name": "activity",
+      "path": "./activity.json",
+      "schema": "activity"
+    }
+  ],
+  "schemas": {
+    "person": {
+      "format": "json-table-schema",
+      "specification": "http://dataprotocols.org/json-table-schema/",
+      "fields": [
+        {
+          "name": "id",
+          "type": "integer",
+          "description": "an integer uniquely identifying a person"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "description":"A person's given name"
+        },
+        {
+          "name": "age",
+          "type": "integer",
+          "description":"A person's age"
+        }
+      ],
+      "primaryKey": ["id"]
+    },
+    "project": {
+      "format": "json-table-schema",
+      "specification": "http://dataprotocols.org/json-table-schema/",
+      "fields": [
+        {
+          "name": "code",
+          "type": "string",
+          "description": "an integer uniquely identifying a person"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "description":"A person's given name"
+        }
+      ],
+      "primaryKey": ["code"]
+    },
+    "activity": {
+      "format": "json-table-schema",
+      "specification": "http://dataprotocols.org/json-table-schema/",
+      "fields": [
+        {
+          "name": "id",
+          "type": "integer",
+          "description": "an integer uniquely identifying an activity"
+        },
+        {
+          "name": "pId",
+          "type": "integer",
+          "description": "person ID"
+        },
+        {
+          "name": "pCode",
+          "type": "string",
+          "description": "project code"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "description":"An activity's given name"
+        },
+
+        {
+          "name": "start",
+          "type": "datetime",
+          "description":"Field indicating when an activity has started"
+        },
+        {
+          "name": "end",
+          "type": "datetime",
+          "description":"Field indicating when an activity has ended"
+        }
+      ],
+      "primaryKey": ["id"],
+      "foreignKeys": [
+        {
+          "fields": ["pId"],
+          "reference": {
+            "datapackage": "",
+            "resource": "person",
+            "fields": ["id"]
+          }
+        },
+        {
+          "fields": ["pCode"],
+          "reference": {
+            "datapackage": "",
+            "resource": "project",
+            "fields": ["code"]
+          }
+        }
+      ]
+    }
+
+  }
+
+}

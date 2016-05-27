@@ -1,0 +1,20 @@
+{
+  "fields": [
+    {
+      "name": "person",
+      "title": "my set of people",
+      "type":"string",
+      "format":""
+    }
+  ],
+  "foreignKeys": [
+    {
+      "fields": "activity",
+      "reference": {
+        "datapackage": "",
+        "resource": "self",
+        "fields": "person"
+      }
+    }
+  ]
+}

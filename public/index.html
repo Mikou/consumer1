@@ -16,17 +16,177 @@
 
     <script>
 
+      var mySchema = null;
+
       if(typeof uvis === 'undefined') {
         document.getElementById("content").innerHTML = '<p>Oups! check that uvis is available at: <a href="http://uvis.dk">http://uvis.dk</a>.</p>';
       }
       uvis.config({
-        fileProvider: function (filename) {
+        schemaParser: function (schema) {
+          var dataPack = JSON.parse(schema);
+          var schema = {};
+          for(var resourceName in dataPack.resources) {
+            var resource = dataPack.resources[resourceName];
+            schema[resource.name] = dataPack.schemas[resource.name];
+          }
+          return schema;
+        },
+        schemaMapper: function (vismSchema, domainSchema) {
+          var schemaProto = {
+            getField: function (name) {
+              for(var i=0, len=this.fields.length; i<len; i++) {
+                if(this.fields[i].name === name) return this.fields[i];
+              }
+              throw new Error("No such field '" + name + "'");
+            }
+          }
+          var schema = {};
+
+          for(var vismTableName in vismSchema) {
+            if(domainSchema[vismTableName]) {
+              var domainTable = domainSchema[vismTableName];
+              var vismTable = vismSchema[vismTableName];
+              var tableSchema = Object.create(schemaProto);
+              tableSchema.type = 'resourceSchema';
+              tableSchema.name = vismTableName;
+              schema[vismTableName] = tableSchema;
+              var fields = [];
+              for(var i in domainTable.fields) {
+                var field = {
+                  name: domainTable.fields[i].name,
+                  description: domainTable.fields[i].description || undefined,
+                  type: domainTable.fields[i].type
+                }
+                fields.push(field);
+              }
+              tableSchema.fields = fields;
+              var primaryKey = [];
+
+              tableSchema.primaryKey = domainTable.primaryKey;
+
+              var foreignKeys = [];
+              for(var relationName in vismTable) {
+                const foreignKey = {
+                  fields: undefined,
+                  reference: {
+                    resource: undefined,
+                    fields: undefined
+                  }
+                };
+                const relation = vismTable[relationName];
+                foreignKey.fields = relation.on.from.fields
+                foreignKey.reference.resource = relationName;
+                foreignKey.reference.fields = relation.on.to.fields;
+                foreignKeys.push(foreignKey);
+              }
+
+              tableSchema.foreignKeys = foreignKeys;
+
+            }
+           }
+
+          mySchema = schema;
+          return schema;
+          
+        },
+        resourceProvider: function (type, resource) {
+         
+          function buildQuery (query, fk) {
+            var select = []; 
+            var $select, $from, $query;
+
+            for(var i in query.properties)
+              select.push(query.properties[i].name);
+
+            select = select.union(query.primaryKey);
+
+            /*if(fk)
+              select = select.union(fk.fields);*/
+
+            //select = select.prepend(query.name + '.');
+
+            var json = [];
+            for(var i in select) {
+              json.push("'" + select[i] + "', " + query.name + '.' + select[i]);
+            }
+
+            debugger;
+            var $fk = (fk) ? fk.fields.toString() + ', ' : '';
+
+            $json_build_object = json.toString()
+
+
+            if(query.expand)
+              $json_build_object += ", '" + query.expand.name + "', " + query.expand.name + ".fields";
+
+            if(query.cardinality === 'many') {
+
+              $select = 'SELECT ' + $fk + 'json_agg(json_build_object(' + $json_build_object + ')) AS fields';
+            } else {
+              $select = 'SELECT ' + $fk + 'json_build_object(' + $json_build_object + ') AS fields';
+            }
+
+            //$select = 'SELECT ' + $fk + 'json_build_object(' + $json_build_object + ') AS fields';
+            $from   = 'FROM ' + query.name;
+            $query  = $select + ' ' + $from;
+
+            if(query.expand) {
+
+              var fk, $join;
+
+              for(var i in query.expand.foreignKeys) {
+                if(query.expand.foreignKeys[i].reference.resource === query.name)
+                  fk = query.expand.foreignKeys[i];
+              }
+
+              $join  = 'JOIN (' + buildQuery(query.expand, fk) + ')'
+              $join += ' AS ' + query.expand.name;
+              $join += ' ON ' + fk.reference.resource + '.' + fk.reference.fields.toString()
+              $join += ' = ' + query.expand.name + '.' + fk.fields.toString();
+
+              $query += ' ' + $join;
+
+            }
+            if(query.cardinality === 'many') 
+              $query += ' GROUP BY pid ';
+
+            return $query;  
+
+          }
 
           return new Promise( function (resolve, reject) {
             var xhr = new XMLHttpRequest();
 
-            xhr.open("GET", './files/' + filename);
-            xhr.send();
+            switch(type) {
+
+              case "vismfile":
+              case "visfile":
+                xhr.open('GET', './files/' + resource);
+                xhr.send();
+                break;
+              case "dataResource":
+                xhr.open('GET', './dataResource/' + resource);
+                xhr.send();
+                break;
+              case "dataSchema":
+                xhr.open('GET', './dataPackage/' + resource);
+                xhr.send();
+                break;
+              case "query":
+                const q = buildQuery(resource);
+                xhr.open('GET', './query/' + q);
+                xhr.send();
+                break;
+                /*xhr.open('POST', './query');
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                const q = buildQuery(resource)
+                debugger;
+                xhr.send(JSON.stringify(resource));
+                break;*/
+              default:
+                throw new Error("no handler for type: '" + type + "'.");
+            }
+
             xhr.onreadystatechange = function() {
               if (xhr.readyState == 4 && xhr.status == 200) {
                 var stream = xhr.responseText;
@@ -36,35 +196,6 @@
             };
 
             });
-        },
-        schemaProvider: uvis.defaultSchemaProvider,
-        odatajs: odatajs,
-        databaseConnector: function (url, opts) {
-
-          if(!opts) {
-            var opts = {
-              method: 'GET'
-            };
-          }
-
-          if(opts.method !== "GET") throw new Error("Only get methods are supported");
-
-          return new Promise( function(resolve, reject) {
-            var xhr = new XMLHttpRequest();
-
-            xhr.open(opts.method, url, true);
-            xhr.onreadystatechange = function () {
-              if(xhr.readyState === 4) {
-
-                if(xhr.status === 200) {
-                  resolve(xhr.responseText);
-                } else {
-                  reject(new Error("The connection to the database failed. Check that the service is running and check your CORS settings."));
-                }
-              }
-            }
-            xhr.send(null);
-          });
         },
         initialVismfile:'initial.vism',
         selector:'content',

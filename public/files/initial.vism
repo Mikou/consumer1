@@ -1,14 +1,19 @@
+' uvis reference card simulation
+
+LimitedRows: false, 200
+InteractionMode: DesignWithControl
+SimulatedTime: true, #01-05-2015 11:15#
+SimulatedUpdate: true
 StartUpForm : "initial.vis"
 --------------------------------
-Database: "http://localhost:8088/service.svc/"
+Database: Provider="http://consumer1.dk/dataService/", Source="datapackage.json"
 --------------------------------
-Table: People
-ID: "Not yet implemented"
-Age: "Not yet implemented"
-Name: "Not yet implemented"
--------------------------------.
-Table: Activities
-ID: "Not yet implemented"
-Name: "Not yet implemented"
-Start: "Not yet implemented"
-End: "Not yet implemented"
+Table: activity
+person: one, join person on activity.pid = person.id
+project: one, join project on activity.pcode = project.code
+--------------------------------
+Table: person
+activity: many, join activity on person.id = activity.pid
+--------------------------------
+Table: project
+activity: many, join activity on project.code = activity.pcode

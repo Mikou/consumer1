@@ -4,17 +4,17 @@ Height:  480
 Name:    Demo
 --------------------
 TextBox: txtPerson
-Rows:    Map.People
+Rows:    Map.person
 Top:     10 + index * 25
 Left:    10
 Width:   100
-Height:  50
-Text:    Map.People.Name
+Height:  Map.person.age
+Text:    Map.person.name
 --------------------
 TextBox: txtActivity
-Rows:    Form.txtPerson -< Map.Activities WHERE Map.Activities.Start > #2016-05-10#
+Rows:    Form.txtPerson -< Map.activity >- Map.project WHERE Map.activity.start > #2016-05-10#
 Top:     Parent ! Top
 Left:    150
 Width:   50
 Height:  50
-Text:    Map.Activities.Name
+Text:    Map.activity.name + " " + Map.project.name
