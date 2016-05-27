@@ -115,7 +115,7 @@ app.get('/query/:query', function (req, res, next) {
         return console.error('error running query', err);
       }
 
-      console.log(result.rows);
+      res.send(result.rows);
 
     });
 
