@@ -1,0 +1,42 @@
+Name: Geometry
+Width:360
+Height:200
+BackgroundColor: White
+--------------
+NavBtn: GotoHome
+Top:10
+Left:10
+Width:90
+Height:40
+Border:1
+Color:White
+BackgroundColor:DarkGray
+Text: "Goto Home"
+GoTo: "/"
+--------------
+Geometry: Shape1
+Shape: Square
+Top:100
+Left:40
+Width:80
+Height:80
+Border:1
+BackgroundColor:LightBlue
+--------------
+Geometry: Shape2
+Shape: Circle
+Top:Form.Shape1.Top
+Left:Form.Shape1.Left + 100
+Width:80
+Height:80
+Border:1
+BackgroundColor:Pink
+--------------
+Geometry: Shape3
+Shape: Triangle
+Top:Form.Shape2.Top
+Left:Form.Shape2.Left + 100
+Width:80
+Height:80
+Border:1
+BackgroundColor:LightGreen

@@ -3,9 +3,7 @@
   "title": "consumer1.dk datapackage",
   "description": "a hypotetical datapackage for consumer1.dk",
   "license":"MIT",
-  "homepage": "http://consumer1.dk",
   "version": "0.1",
-  "author":"michael jespersen <michael.jespersen@gmail.com>",
   "resources": [
     {
       "name": "person",

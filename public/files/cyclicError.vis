@@ -1,0 +1,14 @@
+Width:360
+Height:200
+Name: CyclicError
+---------------------
+TextBox: CyclicError
+Text: "ok"
+---------------------
+TextBox: ref1
+Rows: Form.ref2
+Text: "ref1"
+---------------------
+TextBox: ref2
+Rows: Form.ref1
+Text: "ref2"

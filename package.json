@@ -2,7 +2,7 @@
   "name": "consumer",
   "version": "1.0.0",
   "description": "a consumer app to visEngine",
-  "author": "Mekoo",
+  "author": "Michael Jespersen",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

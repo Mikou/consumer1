@@ -1,10 +1,21 @@
 ' comment
 Width:   625
-Height:  580
+Height:  640
 Name:    Demo2
 --------------------
+NavBtn: GotoHome
+Top:10
+Left:10
+Width:90
+Height:40
+Border:1
+Color:White
+BackgroundColor:DarkGray
+Text: "Goto Home"
+GoTo: "/"
+--------------
 TextBox: labelPerson
-Top:     5
+Top:     60
 Left:    5
 Width:   Form.txtPerson.Width + 10
 Height:  20
@@ -14,7 +25,7 @@ Text:    "People"
 Border:  0
 --------------------
 TextBox: labelActivities
-Top:     5
+Top:     Form.labelPerson.Top
 Left:    Form.bg2.Left
 Width:   Form.bg2.Width
 Height:  20
@@ -25,7 +36,7 @@ Border:  0
 ZIndex:  10
 --------------------
 SimpleBox: bg1
-Top:     30
+Top:     Form.labelPerson.Top + 25
 Left:    5
 Width:   Form.txtPerson.Width + 10
 Height:  545

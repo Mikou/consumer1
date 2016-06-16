@@ -1,0 +1,75 @@
+Width: 320
+Height: 400
+Name: NavigationTest
+------------------------
+TextBox: main
+Text: "Welcome"
+Left: 10
+Top: 10
+Width: 300
+Border:0
+FontSize:30
+FontFamily:"Times New Roman"
+------------------------
+TextBox: instructions
+Text: "Menu"
+Left: 20
+Top: 70
+Width: 280
+Height: 30
+Border:0
+ZIndex:10
+------------------------
+SimpleBox: frame
+Left: Form.instructions.Left
+Top: Form.instructions.Top
+Width: 280
+Height: 250
+Border:2
+Color:White
+BackgroundColor:lightgray
+------------------------
+NavBtn: Button1
+Text: "Simple Geometry"
+Left: Form.instructions.Left + 10
+Top: Form.instructions.Top + 40
+Width: Form.frame.Width - 20
+Height: 30
+GoTo: "/geometry"
+Border:0
+------------------------
+NavBtn: Button2
+Text: "Small dataset"
+Left: Form.instructions.Left + 10
+Top: Form.Button1.Top + Form.Button1.Height + 10
+Width: Form.frame.Width - 20
+Height: 30
+GoTo: "/smallDb"
+Border:0
+------------------------
+NavBtn: Button3
+Text: "Bigger DataSet"
+Left: Form.instructions.Left + 10
+Top: Form.Button2.Top + Form.Button2.Height + 10
+Width: Form.frame.Width - 20
+Height: 30
+GoTo: "/biggerDb"
+Border:0
+------------------------
+NavBtn: Button4
+Text: "Cyclic Parent Reference Error"
+Left: Form.instructions.Left + 10
+Top: Form.Button3.Top + Form.Button3.Height + 10
+Width: Form.frame.Width - 20
+Height: 30
+GoTo: "/cyclicError"
+Border:0
+------------------------
+NavBtn: Button5
+Text: "Not Found Error"
+Left: Form.instructions.Left + 10
+Top: Form.Button4.Top + Form.Button4.Height + 10
+Width: Form.frame.Width - 20
+Height: 30
+GoTo: "/notExistingFile"
+Border:0
