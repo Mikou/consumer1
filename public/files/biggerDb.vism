@@ -6,7 +6,7 @@ SimulatedTime: true, #10-05-2015 11:15#
 SimulatedUpdate: true
 StartUpForm : "database.vis"
 --------------------------------
-Database: Provider="pgsql", Source="http://consumer1.dk/dataService/2/"
+Database: Provider="pgsql", Source="/dataService/2/"
 --------------------------------
 Table: activity
 person: one, join person on activity.pid = person.id
