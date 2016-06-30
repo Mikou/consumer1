@@ -1,6 +1,7 @@
 ' comment
 Width:   625
 Height:  580
+BackgroundColor: White
 Name:    Demo2
 --------------------
 TextBox: labelPerson

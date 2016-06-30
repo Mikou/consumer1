@@ -68,13 +68,12 @@ app.get('/files/:name', function(req, res, next) {
     }
   };
   var filename = req.params.name;
-  setTimeout(function () {
   res.sendFile(filename, options, function (err) {
     if (err) {
       console.log(err);
       res.status(err.status).end();
     }
-  })}, 500);
+  });
 });
 
 function fetchData (query) {

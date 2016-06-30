@@ -1,7 +1,8 @@
-Width: 320
-Height: 400
-Name: NavigationTest
-------------------------
+Name: 'main'
+Width: 380
+Height: 480
+BackgroundColor: White
+-----------------------
 TextBox: main
 Text: "Welcome"
 Left: 10
