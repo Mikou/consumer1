@@ -15,5 +15,3 @@ After the installation it can be started:
 When started, the application will lookup the JavaScript kernel at the address 
 provided in the script tag in `public/index.html`. A tiny css file is also
 downloaded in order to position the toolbox.
-
-The location of the kernel depends on you specific local setup.
