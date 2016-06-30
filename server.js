@@ -1,7 +1,6 @@
 'use strict';
 const express = require('express');
 const bodyParser = require('body-parser')
-const mysql      = require('mysql');
 
 const pg = require('pg');
 const fs = require('fs');
